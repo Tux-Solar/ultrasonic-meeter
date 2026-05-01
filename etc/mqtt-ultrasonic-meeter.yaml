@@ -1,0 +1,28 @@
+# mosquitto_sub  -h localhost -u linky -P '!GizKoz007' -t 'water/#' -v
+# secret located at: /etc/secrets/mqtt.secrets
+broker-host: "localhost"
+broker-user: $LINKY_USR
+broker-pwd: $LINKY_PWD
+broker-port: 1883
+client-id: afb-ultrasonic
+publish-topic: ultrasonic
+mapping-type: topic-pair
+publish-extend: true
+to-mqtt:
+  event:
+    # auto-register to following events
+    registrations:
+      - api: ultrasonic
+        verb: water/flow-net
+        args:
+          action: subscribe
+      - api: ultrasonic
+        verb: water/flow-rate
+        args:
+          action: subscribe
+      - api: ultrasonic
+        verb: water/battery-voltage
+        args:
+          action: subscribe
+    template:
+      data: "%{data}"

@@ -1,0 +1,47 @@
+# reference
+# https://www.home-assistant.io/integrations/sensor.mqtt/
+# device classes: https://www.home-assistant.io/integrations/sensor/#device-class
+# State template: https://forum.hacf.fr/t/unites-de-mesure/64577/8
+
+- unique_id: ultrasonic-flow-net
+  name: Ultrasonic net flow
+  device:
+    identifiers: Ultrasonic
+    name: Ultrasonic-Meeter
+    model: Ultrasonic water meeter
+    model_id: Ultrasonic-v60
+  state_class: measurement
+  device_class: water
+  unit_of_measurement: L
+  state_topic: ultrasonic/flow-net
+  value_template: "{{ value_json.data | int }}"
+  enabled_by_default: true
+
+- unique_id: ultrasonic-flow-rate
+  name: Ultrasonic flow rate 
+  device:
+    identifiers: Ultrasonic
+    name: Ultrasonic-Meeter
+    model: Ultrasonic water meeter
+    model_id: Ultrasonic-v60
+  state_class: measurement
+  device_class: volume_flow_rate
+  unit_of_measurement: m³/h
+  state_topic: ultrasonic/flow-rate
+  value_template: "{{ value_json.data | float | round(2) }}"
+  enabled_by_default: true
+
+- unique_id: ultrasonic-battery
+  name: Ultrasonic battery
+  device:
+    identifiers: Ultrasonic
+    name: Ultrasonic-Meeter
+    model: Ultrasonic water meeter
+    model_id: Ultrasonic-v60
+  state_class: measurement
+  device_class: battery
+  unit_of_measurement: '%'
+  state_topic: ultrasonic/
+  state_topic: ultrasonic/battery-voltage
+  value_template: "{{ ( value_json.data | float /  60 ) | int }}"
+  enabled_by_default: true

@@ -1,0 +1,95 @@
+# Ultrasonic V60 Modbus mapping
+# Author Fulup Ar foll
+# Date: nov-2025
+# Model: Ultrasonic V60 inverter SG03LP1-EU
+
+# Low level debug modbus (when nothing works)
+# --------------------------------------------
+# generate custom request https://npulse.net/en/online-modbus
+# echo -ne "\x01\x03\x\x01\x\x02\x95\xCB" | socat - /dev/ttyUSB0,b24 | od -t x1
+# echo -ne "\x01\x03\x\x01\x\x02\x95\xCB" | socat - tcp4:192.168.1.69:8886 | od -t x1
+name: afb-ultrasonic
+no-ldpaths: true
+port: 1240
+alias:
+  - /devtools:/usr/share/afb-ui-devtools/binder
+  - /:/usr/share/afb-ui-devtools/binder
+
+extension:
+- path: "/usr/local/lib/libafb-mqtt-ext.so"
+"@extconfig":
+  MQTT:
+    config: { "$ref": "/home/fulup/Workspace/Tux-Solar/Ultrasonic-Meeter/etc/mqtt-ultrasonic-meeter.yaml" }
+
+binding:
+  # - path: /usr/redpesk/modbus-binding/lib/modbus-binding.so
+  - path: /usr/local/redpesk/modbus-binding/lib/modbus-binding.so
+    metadata:
+      uid: ultrasonic-meeter
+      version: "1.0"
+      api: ultrasonic
+      info: Emko & Battery config & log
+    uri: tcp://192.168.1.69:8886
+    modbus:
+      uid: cold-water
+      prefix: water
+      info: Cold water ultrasonic meeter
+      slaveid: 2
+      period: 30000
+      idle: 2
+      sensors:
+        - uid: flow-rate
+          info: Flow Rate (m3/h)
+          type: Register_Input
+          format: FLOAT_CDAB
+          register: 0
+        - uid: flow-net
+          info: Net Flow (m3*1000=liter)
+          type: Register_Input
+          format: RINT32
+          register: 8
+        - uid: flow-net-decimal
+          info: Net Flow Decimal
+          type: Register_Input
+          format: FLOAT_CDAB
+          register: 10
+        - uid: battery-voltage
+          info: Battery Volt=value*(2.5/4096)
+          type: Register_Input
+          format: INT16
+          register: 94
+        - uid: flow-unit
+          info: Flow Unit (0=m3 1=L 2=Gal)
+          type: Register_Holding
+          format: INT16
+          register: 1437
+        - uid: flow-multiplier
+          info: Flow Multiplier (0=x1000 -1=100000 ...)
+          type: Register_Holding
+          format: INT16
+          register: 1438
+        - uid: test-1
+          info: Test (should be 0 or 361.0)
+          type: Register_Input
+          format: FLOAT_CDAB
+          register: 360
+        - uid: test-2
+          info: Test (should be 363348858)
+          type: Register_Input
+          format: RINT32
+          register: 362
+        - uid: test-3
+          info: Test (should be -987654321)
+          type: Register_Input
+          format: RINT32
+          register: 364
+        - uid: slave-id
+          info: Slave ID 
+          type: Register_Holding
+          format: INT16
+          register: 61
+        - uid: set-password
+          info: Writting password
+          type: Register_Holding
+          format: INT16
+          register: 56
