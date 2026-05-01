@@ -34,3 +34,8 @@ Check test-(1,2,3) api from devtools should return defined fix values for uint/i
 
 ### Home-Assistant
 <img src="docs/ultrasonic-modbus-homeassistant.png" alt="Ultrasonic Homeassistant" width="800"/>
+
+### Modbus scan
+
+A nice tool to scan modbus registers: https://github.com/sanny32/OpenModScan/releases
+<img src="docs/modbus-ultrasonic-modbus-scan.png" alt="Ultrasonic Modbus register scan" width="800"/>
