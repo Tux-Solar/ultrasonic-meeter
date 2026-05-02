@@ -7,6 +7,8 @@
 
 ### Device configuration:
  * slave-id register: reg@61 (Primary communication Address)
+ * connect with RS485/TCP cable or RS485/TCP/RTU gateway
+ * check connectivity with OpenModScan or equivalent Modbus debug tool
 
 ### WARNING: Ultrasonic/V60 PDF documentation is [partially] accurate
  * register are express as index and not addressed. You should remove 1 to get a valid modbus address

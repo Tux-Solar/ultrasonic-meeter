@@ -11,6 +11,7 @@
     model: Ultrasonic water meeter
     model_id: Ultrasonic-v60
   state_class: measurement
+  state_class: total_increasing
   device_class: water
   unit_of_measurement: L
   state_topic: ultrasonic/flow-net
